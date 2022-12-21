@@ -40,12 +40,12 @@ public class TimeTypeTest {
 
   @ParameterizedTest
   @CsvSource(value = {
-          "00:00:00, 00:00:00",
-          "01:01:01, 01:01:01",
-          "23:59:59, 23:59:59",
-          "1880-12-22 00:00:00, 00:00:00",
-          "2000-01-10 01:01:01, 01:01:01",
-          "1998-08-17 23:59:59, 23:59:59"
+      "00:00:00, 00:00:00",
+      "01:01:01, 01:01:01",
+      "23:59:59, 23:59:59",
+      "1880-12-22 00:00:00, 00:00:00",
+      "2000-01-10 01:01:01, 01:01:01",
+      "1998-08-17 23:59:59, 23:59:59"
   })
   void testTimeFromStringWithCalendar(String inputString, String resultString) {
     Time time = Assertions.assertDoesNotThrow(
