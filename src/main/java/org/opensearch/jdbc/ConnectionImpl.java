@@ -56,6 +56,9 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
     private Transport transport;
     private Protocol protocol;
     private ClusterMetadata clusterMetadata;
+    // 28000 is the SQLSTATE for invalid authorization specification
+    // https://docs.oracle.com/cd/E15817_01/appdev.111/b31228/appd.htm
+    private final String incorrectCredentialsSQLState = "28000";
 
     public ConnectionImpl(ConnectionConfig connectionConfig, Logger log) throws SQLException {
         this(connectionConfig, ApacheHttpTransportFactory.INSTANCE, JsonHttpProtocolFactory.INSTANCE, log);
@@ -84,14 +87,11 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
             ConnectionResponse connectionResponse = this.protocol.connect(connectionConfig.getLoginTimeout() * 1000);
             this.clusterMetadata = connectionResponse.getClusterMetadata();
             this.open = true;
+        } catch (HttpException ex) {
+            logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
+                incorrectCredentialsSQLState, ex));
         } catch (ResponseException | IOException ex) {
-            if (ex instanceof HttpException && ((HttpException) ex).getStatusCode() == 401) {
-                // 28000 is the SQLSTATE for invalid authorization specification
-                // https://docs.oracle.com/cd/E15817_01/appdev.111/b31228/appd.htm
-                logAndThrowSQLException(log, new SQLException("Connection error "+ex.getMessage(), "28000", ex));
-            } else {
-                logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
-            }
+            logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
         }
 
     }
