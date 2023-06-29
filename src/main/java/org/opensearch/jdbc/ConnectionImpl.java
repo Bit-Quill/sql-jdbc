@@ -59,8 +59,6 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
     // https://docs.oracle.com/cd/E15817_01/appdev.111/b31228/appd.htm
     // 28000 is the SQLSTATE for invalid authorization specification
     private final String INCORRECT_CREDENTIALS_SQLSTATE = "28000";
-    // 08001 is the SQLSTATE for failing to establish connection
-    private final String FAILED_TO_ESTABLISH_SQL_CONNECTION = "08001";
 
     public ConnectionImpl(ConnectionConfig connectionConfig, Logger log) throws SQLException {
         this(connectionConfig, ApacheHttpTransportFactory.INSTANCE, JsonHttpProtocolFactory.INSTANCE, log);
@@ -94,12 +92,10 @@ public class ConnectionImpl implements OpenSearchConnection, JdbcWrapper, Loggin
                 logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
                     INCORRECT_CREDENTIALS_SQLSTATE, ex));
             } else {
-                logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
-                    FAILED_TO_ESTABLISH_SQL_CONNECTION, ex));
+                logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
             }
         } catch (ResponseException | IOException ex) {
-            logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(),
-                FAILED_TO_ESTABLISH_SQL_CONNECTION, ex));
+            logAndThrowSQLException(log, new SQLException("Connection error " + ex.getMessage(), ex));
         }
 
     }
