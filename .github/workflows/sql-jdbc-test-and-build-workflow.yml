@@ -20,7 +20,7 @@ jobs:
           cache: gradle
       - name: publishToMavenLocal
         run:
-          ./gradlew publishToMavenLocal
+          ./gradlew publishPublishMavenPublicationToLocalRepoRepository
       - name: Build shadowJar
         run:
           ./gradlew shadowJar
