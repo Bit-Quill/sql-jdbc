@@ -28,8 +28,10 @@ jobs:
         run:
           cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar repository
       - name: package tar
-        run:
+        run: |
           tar -C build -cvf artifacts.tar.gz repository
+          cd repository
+          pwd
       - name: Create Artifact Path
         run: |
           mkdir -p sql-jdbc-builds
