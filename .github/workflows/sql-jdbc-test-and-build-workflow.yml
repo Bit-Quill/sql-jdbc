@@ -18,11 +18,17 @@ jobs:
           java-version: 11
           distribution: 'temurin'
           cache: gradle
-      - name: Build with Gradle
-        run: |
-          ./gradlew publishToMavenLocal &&
-          ./gradlew shadowJar &&
-          cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar repository/org/opensearch/driver/opensearch-sql-jdbc/1.4.0.0 &&
+      - name: publishToMavenLocal
+        run:
+          ./gradlew publishToMavenLocal
+      - name: Build shadowJar
+        run:
+          ./gradlew shadowJar
+      - name: copy shadowJar to path
+        run:
+          cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar repository/org/opensearch/driver/opensearch-sql-jdbc/1.4.0.0
+      - name: package tar
+        run:
           tar -C build -cvf artifacts.tar.gz repository
       - name: Create Artifact Path
         run: |
