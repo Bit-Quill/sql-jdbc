@@ -26,7 +26,7 @@ jobs:
           ./gradlew shadowJar
       - name: copy shadowJar to path
         run:
-          cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar ${HOME}/.m2/repository/org
+          cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar ${HOME}/.m2/LocalRepo/
       - name: package tar
         run:
           tar -C build -cvf artifacts.tar.gz repository
