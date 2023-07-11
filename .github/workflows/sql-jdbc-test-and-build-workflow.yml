@@ -24,3 +24,13 @@ jobs:
           ./gradlew shadowJar &&
           cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar repository/org/opensearch/driver/opensearch-sql-jdbc/1.4.0.0 &&
           tar -C build -cvf artifacts.tar.gz repository
+      - name: Create Artifact Path
+        run: |
+          mkdir -p sql-jdbc-builds
+          cp artifacts.tar.gz sql-jdbc-builds
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: sql-jdbc
+          path: sql-jdbc-builds
