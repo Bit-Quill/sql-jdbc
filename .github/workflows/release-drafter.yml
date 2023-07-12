@@ -25,10 +25,7 @@ jobs:
       - name: Build shadowJar and include in artifacts
         run: |
           ./gradlew shadowJar
-          JDBC_VERSION=$(./gradlew :properties | grep version | cut -d ' ' -f 2)
-          SHADOW_JAR=$(echo build/libs/opensearch-sql-jdbc-shadow-"$JDBC_VERSION".jar)
-          ARTIFACTS=$(echo build/repository/org/opensearch/driver/opensearch-sql-jdbc/"$JDBC_VERSION")
-          mv $SHADOW_JAR $ARTIFACTS
+           mv build/libs/opensearch-sql-jdbc-shadow-*.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/*/
       - name: Create artifacts tar
         run:
           tar -C build -cvf artifacts.tar.gz repository
