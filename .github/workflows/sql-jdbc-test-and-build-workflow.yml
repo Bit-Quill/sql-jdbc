@@ -28,7 +28,7 @@ jobs:
         run: |
           ./gradlew :properties >> properties.txt
           grep 'version' properties.txt | sed 's/version: //' >> "$GITHUB_ENV"
-          cp build/libs/opensearch-sql-jdbc-shadow-$GITHUB_ENV.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/$GITHUB_ENV
+          cp build/libs/opensearch-sql-jdbc-shadow-${GITHUB_ENV}.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/${GITHUB_ENV}
       - name: package tar
         run: |
           tar -C build -cvf artifacts.tar.gz repository
