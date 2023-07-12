@@ -1,43 +1,38 @@
 name: SQL JDBC Java CI
 
 on:
+  pull_request:
   push:
     branches-ignore:
       - 'dependabot/**'
 
 jobs:
   build:
-    name: Test tar packaging with shadowJar
+    strategy:
+      matrix:
+        java:
+          - 11
+          - 17
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Set up JDK 11
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
-          java-version: 11
           distribution: 'temurin'
-          cache: gradle
-      - name: publishToMavenLocal
-        run:
-          ./gradlew publishPublishMavenPublicationToLocalRepoRepository
-      - name: Build shadowJar
-        run: |
-          ./gradlew shadowJar
-          JDBC_VERSION=$(./gradlew :properties | grep version | cut -d ' ' -f 2)
-          SHADOW_JAR=$(echo build/libs/opensearch-sql-jdbc-shadow-"$JDBC_VERSION".jar)
-          ARTIFACTS=$(echo build/repository/org/opensearch/driver/opensearch-sql-jdbc/"$JDBC_VERSION")
-          mv $SHADOW_JAR $ARTIFACTS
-      - name: package tar
-        run: |
-          tar -C build -cvf artifacts.tar.gz repository
+          java-version: ${{ matrix.java }}
+
+      - name: Build with Gradle
+        run: ./gradlew build test shadowJar
+
       - name: Create Artifact Path
         run: |
           mkdir -p sql-jdbc-builds
-          cp artifacts.tar.gz sql-jdbc-builds
+          cp ./build/libs/*.jar sql-jdbc-builds
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: sql-jdbc
+          name: sql-jdbc-java-${{ matrix.java }}
           path: sql-jdbc-builds
