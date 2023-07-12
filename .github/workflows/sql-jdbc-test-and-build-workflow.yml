@@ -27,6 +27,7 @@ jobs:
           ./gradlew :properties >> properties.txt
           JDBC_VERSION=$(grep 'version' properties.txt | sed 's/version: //')
           echo $JDBC_VERSION
+          ls build/libs/
           find build/libs/ -name opensearch-sql-jdbc-shadow-$JDBC_VERSION.jar
       - name: Copy shadowJar to repo
         run:
