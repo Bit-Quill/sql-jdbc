@@ -28,7 +28,7 @@ jobs:
           JDBC_VERSION=$(grep 'version' properties.txt | sed 's/version: //')
           SHADOW_JAR=$(echo build/libs/opensearch-sql-jdbc-shadow-$JDBC_VERSION.jar)
           ARTIFACTS=$(echo build/repository/org/opensearch/driver/opensearch-sql-jdbc/$JDBC_VERSION)
-          mv "$SHADOW_JAR" "$ARTIFACTS"
+          mv $SHADOW_JAR $ARTIFACTS
       - name: package tar
         run: |
           tar -C build -cvf artifacts.tar.gz repository
