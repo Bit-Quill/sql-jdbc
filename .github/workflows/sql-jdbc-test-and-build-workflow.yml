@@ -25,8 +25,10 @@ jobs:
         run:
           ./gradlew shadowJar
       - name: copy shadowJar to path
-        run:
-          cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/1.4.0.0
+        run: |
+          ./gradlew :properties >> properties.txt
+          grep 'version' properties.txt | sed 's/version: //' >> "$GITHUB_ENV"
+          cp build/libs/opensearch-sql-jdbc-shadow-$GITHUB_ENV.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/$GITHUB_ENV
       - name: package tar
         run: |
           tar -C build -cvf artifacts.tar.gz repository
