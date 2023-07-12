@@ -26,7 +26,9 @@ jobs:
           ./gradlew shadowJar
           ./gradlew :properties >> properties.txt
           JDBC_VERSION=$(grep 'version' properties.txt | sed 's/version: //')
-          cp build/libs/opensearch-sql-jdbc-shadow-1.4.0.0.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/1.4.0.0
+          echo $JDBC_VERSION
+          find build/libs/ -name opensearch-sql-jdbc-shadow-$JDBC_VERSION.jar
+          cp build/libs/opensearch-sql-jdbc-shadow-$JDBC_VERSION.jar build/repository/org/opensearch/driver/opensearch-sql-jdbc/1.4.0.0
       - name: package tar
         run: |
           tar -C build -cvf artifacts.tar.gz repository
