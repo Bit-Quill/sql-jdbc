@@ -27,7 +27,7 @@ jobs:
           ./gradlew :properties >> properties.txt
           JDBC_VERSION=$(grep 'version' properties.txt | sed 's/version: //')
           SHADOW_JAR=$(echo build/libs/opensearch-sql-jdbc-shadow-$JDBC_VERSION.jar)
-          ARTIFACTS=$(echo build/repository/org/opensearch/driver/opensearch-sql-jdbc/$JDBC_VERSION)
+          ARTIFACTS=$(echo build/repository/org/opensearch/driver/opensearch-sql-jdbc/)
           mv $SHADOW_JAR $ARTIFACTS
       - name: package tar
         run: |
