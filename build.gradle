@@ -15,7 +15,7 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '4.0.1'
+    id 'com.github.johnrengelman.shadow' version '4.0.0'
     id 'jacoco'
     id 'maven'
     id 'maven-publish'
