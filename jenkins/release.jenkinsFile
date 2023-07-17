@@ -18,14 +18,14 @@ standardReleasePipelineWithGenericTrigger(
             assumedRoleName: 'sql-jdbc-upload-role',
             source: "$WORKSPACE/artifacts.tar.gz",
             destination: "https://artifacts.opensearch.org/opensearch-clients/jdbc/opensearch-sql-jdbc-${tag}.tar.gz",
-            signingPlatform: 'windows',
+            signingPlatform: 'linux',
             sigOverwrite: true
         )
         publishToArtifactsProdBucket(
             assumedRoleName: 'sql-jdbc-shadowJar-upload-role',
-            source: "$WORKSPACE/build/libs/opensearch-sql-jdbc-shadow-*.jar",
+            source: "$WORKSPACE/opensearch-sql-jdbc-shadow-*.jar",
             destination: "https://artifacts.opensearch.org/opensearch-clients/jdbc/opensearch-sql-jdbc-shadow-${tag}.jar",
-            signingPlatform: 'windows',
+            signingPlatform: 'linux',
             sigOverwrite: true
         )
     }
