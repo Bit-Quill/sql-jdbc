@@ -1,7 +1,6 @@
 (function propertiesbuilder(attr) {
-    var props = {};
-    props["user"] = attr[connectionHelper.attributeUsername];
-    props["password"] = attr[connectionHelper.attributePassword];
-
-    return props;
+    return {
+      user: attr[connectionHelper.attributeUsername],
+      password: attr[connectionHelper.attributePassword]
+    };
 })
